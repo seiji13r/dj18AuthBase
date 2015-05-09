@@ -1,0 +1,37 @@
+{% extends "base_site.html" %}
+
+{% block content1 %}
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12 col-lg-offset-4 col-md-offset-4">
+	{% if user.is_authenticated %}
+		<!-- If the User is currently authenicated this will re-direct to the main page -->
+		<meta HTTP-EQUIV="REFRESH" content="0; url={% url "main" %}">
+	{% else %}
+		{% if form.errors %}
+			<p>Your username and password didn't match. Please try again.</p>
+		{% endif %}
+
+		<form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+		{% csrf_token %}
+			<table>
+				<tr>
+					<td>{{ form.username.label_tag }}</td>
+					<td>{{ form.username }}</td>
+				</tr>
+				<tr>
+					<td>{{ form.password.label_tag }}</td>
+					<td>{{ form.password }}</td>
+				</tr>
+			</table>
+
+			<input class="btn-primary" type="submit" value="login" />
+			<input type="hidden" name="next" value="{{ next }}" />
+		</form>
+	{% endif %}
+		</div>
+	</div>
+</div>
+
+{% endblock %}
