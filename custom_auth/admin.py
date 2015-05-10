@@ -14,7 +14,13 @@ class UserProfileInLine(admin.StackedInline):
 
 # Define a new User admin
 class UserAdmin(UserAdmin):
-    inlines = (UserProfileInLine, )
+   def add_view(self, *args, **kwargs):
+      self.inlines = []
+      return super(UserAdmin, self).add_view(*args, **kwargs)
+
+   def change_view(self, *args, **kwargs):
+      self.inlines = [UserProfileInLine]
+      return super(UserAdmin, self).change_view(*args, **kwargs)
 
 # Re-register UserAdmin
 admin.site.unregister(User)
